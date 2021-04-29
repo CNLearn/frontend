@@ -10,7 +10,7 @@
         type="text"
         class="search_box"
         id="search_box"
-        v-model="searchString"
+        v-model="localSearchString"
         placeholder="Search"
         data-test="search_box"
       />
@@ -20,6 +20,7 @@
 
 <script>
 import InputText from 'primevue/inputtext';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'SearchInput',
@@ -29,8 +30,19 @@ export default {
   },
   data() {
     return {
-      searchString: '',
+      localSearchString: '',
     };
+  },
+  watch: {
+    localSearchString() {
+      this.setSearch(this.localSearchString);
+    },
+  },
+  computed: {
+    ...mapState('search', ['searchString']),
+  },
+  methods: {
+    ...mapActions('search', ['setSearch']),
   },
 };
 </script>

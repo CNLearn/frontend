@@ -35,14 +35,14 @@ export default {
   },
   watch: {
     localSearchString() {
-      this.setSearch(this.localSearchString);
+      this.search(this.localSearchString);
     },
   },
   computed: {
     ...mapState('search', ['searchString']),
   },
   methods: {
-    ...mapActions('search', ['setSearch']),
+    ...mapActions('search', ['search']),
   },
 };
 </script>

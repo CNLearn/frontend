@@ -25,20 +25,20 @@ describe('SearchInput', () => {
     // first check that the searchString in the search module state is null
     expect(store.state.search.searchString).toBe('')
     // set the searchString data using setData method
-    await wrapper.setData({ localSearchString: "hello" })
+    await wrapper.setData({ localSearchString: "你好" })
     expect(wrapper.find('[data-test="search_string"]').exists()).toBe(true)
     const search_string = wrapper.find(
       '[data-test="search_string"]').element.textContent
-    expect(search_string).toBe("hello")
+    expect(search_string).toBe("你好")
     // let's check the store state as well (obviously should pass if above passes)
-    expect(store.state.search.searchString).toBe('hello')
+    expect(store.state.search.searchString).toBe('你好')
 
     // let's also "write some text" in the textfield using setValue
-    await wrapper.find('[data-test="search_box"]').setValue("general")
+    await wrapper.find('[data-test="search_box"]').setValue("我们的朋友")
     const updated_search_string = wrapper.find('[data-test="search_string"]').element.textContent
-    expect(updated_search_string).toBe("general")
+    expect(updated_search_string).toBe("我们的朋友")
     // let's check the store state as well (obviously should pass if above passes)
-    expect(store.state.search.searchString).toBe('general')
+    expect(store.state.search.searchString).toBe('我们的朋友')
   });
   test('Checks if the component got mounted', async () => {
     const { store, wrapper } = factory();
@@ -52,5 +52,25 @@ describe('SearchInput', () => {
     const { store, wrapper } = factory();
     // first check that the searchString in the search module state is null
     expect(store.state.search.searchString).toBe('')
+  });
+  test('Checks if anything that is not a Chinese character gets filtered out', async () => {
+    const { store, wrapper } = factory();
+    // first check that the searchString in the search module state is null
+    expect(store.state.search.searchString).toBe('')
+    // set the searchString data using setData method
+    await wrapper.setData({ localSearchString: "你们是our friends" })
+    expect(wrapper.find('[data-test="search_string"]').exists()).toBe(true)
+    const search_string = wrapper.find(
+      '[data-test="search_string"]').element.textContent
+    expect(search_string).toBe("你们是")
+    // let's check the store state as well (obviously should pass if above passes)
+    expect(store.state.search.searchString).toBe('你们是')
+
+    // let's also "write some text" in the textfield using setValue
+    await wrapper.find('[data-test="search_box"]').setValue("我们的朋友are you")
+    const updated_search_string = wrapper.find('[data-test="search_string"]').element.textContent
+    expect(updated_search_string).toBe("我们的朋友")
+    // let's check the store state as well (obviously should pass if above passes)
+    expect(store.state.search.searchString).toBe('我们的朋友')
   });
 });

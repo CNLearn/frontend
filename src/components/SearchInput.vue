@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p data-test="searched_for">You searched for:</p>
-    <p data-test="search_string" v-if="searchString.length > 0">
+    <p data-test="searchedFor">You searched for:</p>
+    <p data-test="searchString" v-if="searchString.length > 0">
       {{ searchString }}
     </p>
     <span class="p-input-icon-left">
@@ -12,7 +12,7 @@
         id="search_box"
         v-model="localSearchString"
         placeholder="Search"
-        data-test="search_box"
+        data-test="searchBox"
       />
     </span>
   </div>

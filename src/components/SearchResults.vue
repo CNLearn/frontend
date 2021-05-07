@@ -1,9 +1,13 @@
 <template>
-  <div data-test="search_results_div" class="search_results">
-    <div data-test="search_results_found" v-if="segmentedWords.size>0" class="container p-grid p-flex-column">
-        <p v-for="word of segmentedWords.values()" :key="word">{{ word }}</p>
+  <div data-test="searchResultsDiv" class="search_results">
+    <div
+     data-test="searchResultsFound"
+     v-if="currentWords.size>0"
+     class="container p-grid p-flex-column"
+     >
+        <p v-for="word of currentWords" :key="word">{{ word }}</p>
     </div>
-    <div data-test="search_results_blank" v-else>
+    <div data-test="searchResultsBlank" v-else>
         <p>Enter some text to get started.</p>
     </div>
   </div>
@@ -14,7 +18,7 @@ import { mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState('search', ['segmentedWords']),
+    ...mapState('search', ['currentWords']),
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="search_box_div">
     <p data-test="searchedFor">You searched for:</p>
     <p data-test="searchString" v-if="searchString.length > 0">
       {{ searchString }}
@@ -48,4 +48,8 @@ export default {
 </script>
 
 <style>
+
+.search_box_div {
+  margin-bottom: 2em;
+}
 </style>

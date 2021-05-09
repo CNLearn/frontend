@@ -5,7 +5,13 @@
      v-if="currentWords.size>0"
      class="container p-grid p-flex-column"
      >
-        <p v-for="word of currentWords" :key="word">{{ word }}</p>
+      <div v-for="simplifiedWord of currentWords" :key="simplifiedWord">
+        <WordCard
+         v-for="(wordObject, index) in getWord(simplifiedWord)"
+         :key="index"
+         v-bind="getWordObject(simplifiedWord, index, 2)"
+        />
+      </div>
     </div>
     <div data-test="searchResultsBlank" v-else>
         <p>Enter some text to get started.</p>
@@ -14,11 +20,28 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
+import WordCard from '@/components/WordCard.vue';
 
 export default {
+  components: {
+    WordCard,
+  },
+  methods: {
+    getWordObject(simplifiedWord, pos, nDefinitions) {
+      const allWords = this.getWord(simplifiedWord);
+      const {
+        simplified: word,
+        pinyin_accent: pinyin,
+        definitions: fullDefinitions,
+      } = allWords[pos];
+      const definitions = fullDefinitions.split(';').slice(0, nDefinitions);
+      return { word, pinyin, definitions };
+    },
+  },
   computed: {
     ...mapState('search', ['currentWords']),
+    ...mapGetters('search', ['getWord']),
   },
 };
 </script>

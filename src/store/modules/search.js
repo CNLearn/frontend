@@ -89,7 +89,10 @@ const search = {
       }
     },
   },
-  getters: {},
+  getters: {
+    getWord: (state) => (simplified) => state.cachedWords.get(simplified),
+    getSpecificWord: (state) => (simplified, pos) => state.cachedWords.get(simplified)[pos],
+  },
 };
 
 export default search;

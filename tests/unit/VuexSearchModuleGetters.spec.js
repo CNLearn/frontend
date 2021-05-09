@@ -1,9 +1,5 @@
-import { mount } from '@vue/test-utils';
-import SearchResults from '@/components/SearchResults.vue';
-import PrimeVue from 'primevue/config';
 import search from '@/store/modules/search';
 import { createStore } from 'vuex';
-import { nextTick } from 'vue';
 import { zip } from 'lodash';
 
 const initialSearchStore = {
@@ -143,45 +139,29 @@ const factory = () => {
       search,
     },
   });
-  const wrapper = mount(SearchResults, {
-    global: {
-      plugins: [PrimeVue, store],
-    },
-  });
-  return { store, wrapper };
+  // manually set the state of our search module state
+  store.state.search = initialSearchStore;
+  return store;
 };
 
-describe('SearchResults', () => {
-  test('Checks if the component got mounted', async () => {
-    const { store, wrapper } = factory();
-    expect(wrapper.find('[data-test="searchResultsDiv"]').exists()).toBe(true);
-    expect(wrapper.find('[data-test="searchResultsFound"]').exists()).toBe(false);
-    expect(wrapper.find('[data-test="searchResultsBlank"]').exists()).toBe(true);
-    // let's also check that the currentWords is also blank
-    expect(store.state.search.currentWords.size).toEqual(0);
+describe('Vuex Search Module Getters', () => {
+  test('Tests the getWord getter', () => {
+    const store = factory();
+    const getWord = store.getters['search/getWord'];
+    const wordsToTest = ['我们', '是', '你们', '的', '朋友'];
+    wordsToTest.forEach((word) => {
+      expect(getWord(word)).toEqual(initialSearchStore.cachedWords.get(word));
+    });
   });
-  test('Checks if WordCards are shown', async () => {
-    const { store, wrapper } = factory();
-    expect(wrapper.find('[data-test="searchResultsDiv"]').exists()).toBe(true);
-    expect(wrapper.find('[data-test="searchResultsFound"]').exists()).toBe(false);
-    expect(wrapper.find('[data-test="searchResultsBlank"]').exists()).toBe(true);
-    // manually set the state of our search module state
-    store.state.search = initialSearchStore;
-
-    await nextTick();
-    expect(wrapper.find('[data-test="searchResultsDiv"]').exists()).toBe(true);
-    expect(wrapper.find('[data-test="searchResultsFound"]').exists()).toBe(true);
-    expect(wrapper.find('[data-test="searchResultsBlank"]').exists()).toBe(false);
-    // there should be 9 cards shown, so there should be 9 cardTtles
-    const cardTitles = wrapper.findAll('.p-card-title');
-    expect(cardTitles.length).toEqual(9);
-    const cardWords = ['我们', '是', '是', '你们', '的', '的', '的', '的', '朋友'];
-    // now let's iterate over each cardWord and each cardTitle
-    // let's zip them together...yes Python I know
-    const cardTitlesAndWords = zip(cardTitles, cardWords);
-    cardTitlesAndWords.forEach(([cardTitle, word]) => {
-      // now check the text in each one and compare with the word in the array
-      expect(cardTitle.text()).toEqual(word);
+  test('Tests the getSpecificWord getter', () => {
+    const store = factory();
+    const getSpecificWord = store.getters['search/getSpecificWord'];
+    const wordsToTest = ['我们', '是', '是', '你们', '的', '的', '的', '的', '朋友'];
+    const positions = [0, 0, 1, 0, 0, 1, 2, 3, 0];
+    const wordsAndPositions = zip(wordsToTest, positions);
+    wordsAndPositions.forEach(([word, position]) => {
+      expect(getSpecificWord(word, position))
+        .toEqual(initialSearchStore.cachedWords.get(word)[position]);
     });
   });
 });

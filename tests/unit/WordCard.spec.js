@@ -27,7 +27,7 @@ const factory = () => {
 };
 
 describe('WordCard', () => {
-  test('Checks if the component got mounted', async () => {
+  test('Checks if the component got mounted', () => {
     const { wrapper } = factory();
     expect(wrapper.find('.p-card-title').exists()).toBe(true);
     expect(wrapper.find('.p-card-title').text()).toBe('好');

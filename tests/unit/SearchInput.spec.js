@@ -21,6 +21,7 @@ const factory = () => {
       plugins: [PrimeVue, store],
     },
   });
+
   return { store, wrapper };
 };
 

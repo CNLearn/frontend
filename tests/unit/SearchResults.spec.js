@@ -2,6 +2,9 @@ import { mount } from '@vue/test-utils';
 import SearchResults from '@/components/SearchResults.vue';
 import PrimeVue from 'primevue/config';
 import search from '@/store/modules/search';
+import Search from '@/views/Search.vue';
+import WordPage from '@/views/WordPage.vue';
+import { createMemoryHistory, createRouter } from 'vue-router';
 import { createStore } from 'vuex';
 import { nextTick } from 'vue';
 import { zip } from 'lodash';
@@ -143,17 +146,34 @@ const factory = () => {
       search,
     },
   });
+  const routes = [
+    {
+      path: '/',
+      name: 'search',
+      component: Search,
+    },
+    {
+      path: '/words/:simplified',
+      name: 'wordDetail',
+      component: WordPage,
+    },
+  ];
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+  });
   const wrapper = mount(SearchResults, {
     global: {
-      plugins: [PrimeVue, store],
+      plugins: [PrimeVue, store, router],
     },
   });
-  return { store, wrapper };
+  return { store, wrapper, router };
 };
 
 describe('SearchResults', () => {
   test('Checks if the component got mounted', async () => {
-    const { store, wrapper } = factory();
+    const { store, wrapper, router } = factory();
+    await router.isReady();
     expect(wrapper.find('[data-test="searchResultsDiv"]').exists()).toBe(true);
     expect(wrapper.find('[data-test="searchResultsFound"]').exists()).toBe(false);
     expect(wrapper.find('[data-test="searchResultsBlank"]').exists()).toBe(true);
@@ -161,7 +181,8 @@ describe('SearchResults', () => {
     expect(store.state.search.currentWords.size).toEqual(0);
   });
   test('Checks if WordCards are shown', async () => {
-    const { store, wrapper } = factory();
+    const { store, wrapper, router } = factory();
+    await router.isReady();
     expect(wrapper.find('[data-test="searchResultsDiv"]').exists()).toBe(true);
     expect(wrapper.find('[data-test="searchResultsFound"]').exists()).toBe(false);
     expect(wrapper.find('[data-test="searchResultsBlank"]').exists()).toBe(true);

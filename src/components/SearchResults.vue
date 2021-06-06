@@ -6,11 +6,15 @@
      class="container p-grid p-flex-column"
      >
       <div v-for="simplifiedWord of currentWords" :key="simplifiedWord">
+        <router-link
+         :to="{ name: 'wordDetail', params: { simplified: simplifiedWord } }"
+         >
         <WordCard
          v-for="(wordObject, index) in getWord(simplifiedWord)"
          :key="index"
          v-bind="getWordObject(simplifiedWord, index, 2)"
         />
+        </router-link>
       </div>
     </div>
     <div data-test="searchResultsBlank" v-else>

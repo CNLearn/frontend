@@ -1,12 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
 const fastApiClient = axios.create({
-  baseURL: 'http://localhost:8000',
+  // baseURL: 'http://localhost:8000',
+  baseURL: "https://justatesting.page",
   withCredentials: false,
   headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  }
 });
 
 export default {
@@ -15,5 +16,5 @@ export default {
   },
   getCharacter(character) {
     return fastApiClient.get(`/characters/simplified/${character}`);
-  },
+  }
 };

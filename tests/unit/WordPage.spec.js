@@ -82,7 +82,8 @@ describe("WordPage", () => {
           ]
         ]
       ]),
-      currentWords: new Set(["我们"])
+      currentWords: new Set(["我们"]),
+      searchHistory: new Map([["我们", 1]])
     };
     const { store, wrapper, router } = await factory(initialSearchStore, "我们");
     await router.isReady();
@@ -124,7 +125,8 @@ describe("WordPage", () => {
       searchString: "我们",
       segmentedWords: new Map(),
       cachedWords: new Map(),
-      currentWords: new Set()
+      currentWords: new Set(),
+      searchHistory: new Map()
     };
     const mockData = [
       {
@@ -187,7 +189,8 @@ describe("WordPage", () => {
       searchString: "",
       segmentedWords: new Map(),
       cachedWords: new Map(),
-      currentWords: new Set()
+      currentWords: new Set(),
+      searchHistory: new Map()
     };
     const mockData1 = [];
     const mockData2 = [
@@ -305,7 +308,8 @@ describe("WordPage", () => {
       searchString: "",
       segmentedWords: new Map(),
       cachedWords: new Map(),
-      currentWords: new Set()
+      currentWords: new Set(),
+      searchHistory: new Map()
     };
     const { wrapper, router } = await factory(initialSearchStore, "hi");
     await router.isReady();

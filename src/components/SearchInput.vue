@@ -10,7 +10,7 @@
         type="text"
         class="search_box"
         id="search_box"
-        v-model="localSearchString"
+        v-model="localString"
         placeholder="Search"
         data-test="searchBox"
       />
@@ -19,36 +19,42 @@
 </template>
 
 <script>
-import InputText from 'primevue/inputtext';
-import { mapState, mapActions } from 'vuex';
+import InputText from "primevue/inputtext";
+import { mapState, mapActions } from "vuex";
+import { debounce } from "lodash";
 
 export default {
-  name: 'SearchInput',
+  name: "SearchInput",
   props: {},
   components: {
-    InputText,
+    InputText
   },
   data() {
     return {
-      localSearchString: '',
+      localString: ""
     };
   },
   watch: {
-    localSearchString() {
-      this.search(this.localSearchString);
-    },
+    localString(newValue) {
+      this.debSearch(newValue);
+    }
+  },
+  created() {
+    this.debSearch = debounce(this.search, 500);
   },
   computed: {
-    ...mapState('search', ['searchString']),
+    ...mapState("search", ["searchString"])
   },
   methods: {
-    ...mapActions('search', ['search']),
+    ...mapActions("search", ["search"])
   },
+  beforeUnmount() {
+    this.debSearch.cancel();
+  }
 };
 </script>
 
 <style>
-
 .search_box_div {
   margin-bottom: 2em;
 }

@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { mount, flushPromises } from "@vue/test-utils";
 import StrokeDiagram from "@/components/StrokeDiagram.vue";
 import PrimeVue from "primevue/config";
 
@@ -31,6 +31,7 @@ describe("StrokeDiagram", () => {
 
     // let's click on the button
     await button.trigger("click");
+    await flushPromises();
     expect(mockAnimateAction).toHaveBeenCalled();
   });
 });

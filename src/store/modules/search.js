@@ -74,7 +74,7 @@ const search = {
       // we incremenent it whenever a search string is extended
       const currentWordsArray = [...state.currentWords];
 
-      if (!currentWordsArray.includes(word)) {
+      if (!currentWordsArray.includes(word.simplified)) {
         commit("UPDATE_HISTORY", { simplified: word.simplified });
       }
     },

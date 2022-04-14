@@ -101,17 +101,22 @@ describe("Vuex Search Module Mutations", () => {
     // now should be empty again
     expect(store.state.search.currentWords.size).toEqual(0);
   });
-  // test('Tests the UPDATE_HISTORY mutation', () => {
-  //   const store = factory();
-  //   // the currentWords is currently empty
-  //   expect(store.state.search.currentWords.size).toEqual(0);
-  //   // let's add a few things to it
-  //   const wordsArray = ['我们', '是', '你们'];
-  //   wordsArray.forEach((word) => store.state.search.currentWords.add(word));
-  //   expect(store.state.search.currentWords.size).toEqual(3);
-  //   // now let's use the mutation
-  //   store.commit('search/CLEAR_CURRENT_WORDS');
-  //   // now should be empty again
-  //   expect(store.state.search.currentWords.size).toEqual(0);
-  // });
+  test("Tests the UPDATE_HISTORY mutation when the word is not in searchHistory", () => {
+    const store = factory();
+    expect(store.state.search.searchHistory.size).toEqual(0);
+    // now let's commit the mutation
+    store.commit("search/UPDATE_HISTORY", { simplified: "我" });
+    expect(store.state.search.searchHistory.size).toEqual(1);
+    expect(store.state.search.searchHistory.get("我")).toEqual(1);
+  });
+  test("Tests the UPDATE_HISTORY mutation when the word is in searchHistory", () => {
+    const store = factory();
+    store.state.search.searchHistory.set("我", 1);
+    expect(store.state.search.searchHistory.size).toEqual(1);
+    expect(store.state.search.searchHistory.get("我")).toEqual(1);
+    // now let's commit the mutation
+    store.commit("search/UPDATE_HISTORY", { simplified: "我" });
+    expect(store.state.search.searchHistory.size).toEqual(1);
+    expect(store.state.search.searchHistory.get("我")).toEqual(2);
+  });
 });

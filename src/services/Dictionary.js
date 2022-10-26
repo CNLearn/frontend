@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const fastApiClient = axios.create({
-  // baseURL: 'http://localhost:8000',
-  baseURL: "https://justatesting.page",
+  baseURL: "http://localhost:8000",
   withCredentials: false,
   headers: {
     Accept: "application/json",

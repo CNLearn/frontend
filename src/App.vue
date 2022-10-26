@@ -1,7 +1,8 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link :to="{ name: 'history' }">History</router-link>
+    <router-link :to="{ name: 'history' }">History</router-link> |
+    <router-link :to="{ name: 'account' }">My Account</router-link>
   </div>
   <router-view :key="$route.fullPath" />
 </template>
